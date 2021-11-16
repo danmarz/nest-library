@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Book } from './interface/book.class'
-import { Book as Entity } from './entity/book.entity'
+// import { Book } from './interface/book.class'
+import { Book } from './entity/book.entity'
 import { BookDto } from './dto/book.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -30,48 +30,65 @@ const books:Array<Book> = [
 @Injectable()
 export class BookService {
   constructor(
-    @InjectRepository(Entity) private bookRepository: Repository<Entity>
+    @InjectRepository(Book) private bookRepository: Repository<Book>
   ){}
 
-  findAll(params): any {
+  async findAll(params): Promise<Book[]> {
+    return await this.bookRepository.find()
   }
-  findBook(bookId:string){
-    //  return `findBook funciona con bookId:${bookId}`;
-    return books.find(element => element.id === +bookId)
-  }
-  createBook(newBook: BookDto): Book{
-    const book = new Book()
-    book.id = 99
-    book.author = newBook.author
-    book.description = newBook.description
-    book.genre = newBook.genre
-    book.pages = +newBook.pages
-    book.publisher = newBook.publisher
+
+  async createBook(newBook: BookDto): Promise<Book>{
+    const book: Book = new Book()
+    // Object.assign(book,newBook)
+   
     book.title = newBook.title
+    book.author = newBook.author
+    book.pages = +newBook.pages
+    book.genre = newBook.genre
+    book.description = newBook.description
+    book.publisher = newBook.publisher
+    book.image_url = newBook.image_url
 
-    books.push(book)
-
-    return book
+    return await this.bookRepository.save(book)
   }
-  deleteBook(bookId:string){
-    const index = books.findIndex(element => element.id === +bookId)
-    // return `deleteBook funciona con bookId:${bookId}`;
-    return  books.splice(index,1)[0]
+
+  // findBook(bookId:string){
+  //   //  return `findBook funciona con bookId:${bookId}`;
+  //   return books.find(element => element.id === +bookId)
+  // }
+  // createBook(newBook: BookDto): Book{
+  //   const book = new Book()
+  //   book.id = 99
+  //   book.author = newBook.author
+  //   book.description = newBook.description
+  //   book.genre = newBook.genre
+  //   book.pages = +newBook.pages
+  //   book.publisher = newBook.publisher
+  //   book.title = newBook.title
+
+  //   books.push(book)
+
+  //   return book
+  // }
+  // deleteBook(bookId:string){
+  //   const index = books.findIndex(element => element.id === +bookId)
+  //   // return `deleteBook funciona con bookId:${bookId}`;
+  //   return  books.splice(index,1)[0]
     
-  }
-  updateBook(bookId:string, newBook:BookDto){
-    const index = books.findIndex(element => element.id === +bookId)
-    const book = new Book()
-    book.id = +bookId
-    book.author = newBook.author
-    book.description = newBook.description
-    book.genre = newBook.genre
-    book.pages = +newBook.pages
-    book.publisher = newBook.publisher
-    book.title = newBook.title
-    // return `deleteBook funciona con bookId:${bookId}`;
-    return books.splice(index,1,book)[0]
+  // }
+  // updateBook(bookId:string, newBook:BookDto){
+  //   const index = books.findIndex(element => element.id === +bookId)
+  //   const book = new Book()
+  //   book.id = +bookId
+  //   book.author = newBook.author
+  //   book.description = newBook.description
+  //   book.genre = newBook.genre
+  //   book.pages = +newBook.pages
+  //   book.publisher = newBook.publisher
+  //   book.title = newBook.title
+  //   // return `deleteBook funciona con bookId:${bookId}`;
+  //   return books.splice(index,1,book)[0]
 
-    // return newBook;
-  }
+  //   // return newBook;
+  // }
 }
