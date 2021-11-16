@@ -6,7 +6,6 @@ import {
   Param,
   Put,
   Post,
-  Query,
   Req,
   ParseIntPipe,
 } from '@nestjs/common'
@@ -18,7 +17,8 @@ import { DeleteResult } from 'typeorm'
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
-
+  
+  // TODO : get with queries
   // @Get()
   // findAll(@Query('order') order:string, @Query('limit') limit: string) {
   //   const params = [];
@@ -41,7 +41,6 @@ export class BookController {
 
   @Post()
   createBook(@Body() newBook: BookDto): Promise<Book> {
-    // const newBook: any = body;
     return this.bookService.createBook(newBook)
   }
 
