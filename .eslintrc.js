@@ -6,8 +6,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
-    //'plugin:@typescript-eslint/recommended',
-    //'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/recommended',
+   // 'plugin:prettier/recommended',
   ],
   root: true,
   env: {
@@ -25,6 +25,6 @@ module.exports = {
       { "selector": "parameterProperty", "format": ["camelCase"] }
   ,],
   "semi": "off",
-  "@typescript-eslint/semi": ["warn","never"]
+  "@typescript-eslint/semi": ["error","never"]
   }
 };

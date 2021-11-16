@@ -1,0 +1,29 @@
+POST http://localhost:3000/api/v1/book
+Content-Type: application/json
+
+{
+    "title": "El enigma de la habitación 622",
+    "genre": "Ficción contemporánea",
+    "description": "Vuelve el «principito de la literatura negra contemporánea, el niño mimado de la industria literaria» (GQ): el nuevo thriller de Joël Dicker es su novela más personal. ",
+    "author": "Joël Dicker",
+    "publisher": "Alfaguara",
+    "pages": 624,
+    "image_url": "https://images-na.ssl-images-amazon.com/images/I/41KiZbwOhhL._SX315_BO1,204,203,200_.jpg"
+}
+
+#####
+DELETE http://localhost:3000/api/v1/book/1
+
+####
+PUT http://localhost:3000/api/v1/book/1
+Content-Type: application/json
+
+{
+    "title": "El enigma de la habitación 622",
+    "genre": "Ficción contemporánea",
+    "description": "Vuelve el «principito de la literatura negra contemporánea, el niño mimado de la industria literaria» (GQ): el nuevo thriller de Joël Dicker es su novela más personal. ",
+    "author": "Joël Dicker",
+    "publisher": "Alfaguara",
+    "pages": 624,
+    "image_url": "https://images-na.ssl-images-amazon.com/images/I/41KiZbwOhhL._SX315_BO1,204,203,200_.jpg"
+}
