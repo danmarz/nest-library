@@ -10,7 +10,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common'
 import { Request } from 'express'
-import { BookDto } from './dto/book.dto'
+import { createBookDto } from './dto/book.dto'
 import { BookService } from './book.service'
 import { Book } from './entity/book.entity'
 import { DeleteResult } from 'typeorm'
@@ -35,22 +35,22 @@ export class BookController {
   }
 
   @Get(':bookId')
-  findBook(@Param('bookId', ParseIntPipe) bookId: number): Promise<Book> {
-    return this.bookService.findBookById(bookId)
+  findBook(@Param('bookId') bookId: number): Promise<Book> {
+    return this.bookService.findOne(bookId)
   }
 
   @Post()
-  createBook(@Body() newBook: BookDto): Promise<Book> {
+  createBook(@Body() newBook: createBookDto): Promise<Book> {
     return this.bookService.createBook(newBook)
   }
 
-  @Delete(':bookId') 
-  deleteBook(@Param('bookId', ParseIntPipe) bookId: number): Promise<DeleteResult> {
-    return this.bookService.deleteBook(bookId)
-  }
+  // @Delete(':bookId') 
+  // deleteBook(@Param('bookId') bookId: number): Promise<DeleteResult> {
+  //   return this.bookService.deleteBook(bookId)
+  // }
 
-  @Put(':bookId')
-  updateBook(@Param('bookId', ParseIntPipe) bookId: number, @Body() newBook: BookDto): Promise<Book> {
-    return this.bookService.updateBook(bookId, newBook)
-  }
+  // @Put(':bookId')
+  // updateBook(@Param('bookId') bookId: number, @Body() newBook: BookDto): Promise<Book> {
+  //   return this.bookService.updateBook(bookId, newBook)
+  // }
 }

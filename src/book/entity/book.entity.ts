@@ -1,30 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
-export class Book{
+export class Book {
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column()
+  title: string
 
-    @Column()
-    title: string
+  @Column()
+  genre: string
 
-    @Column()
-    genre: string
+  @Column()
+  description: string
 
-    @Column()
-    description: string
-        
-    @Column()
-    author: string
+  @Column()
+  author: string
 
-    @Column()
-    publisher: string
+  @Column()
+  publisher: string
 
-    @Column()
-    pages: number
+  @Column()
+  pages: number
 
-    @Column()
-    image_url: string
+  @Column()
+  image_url: string
 
+  @Column({ default: true })
+  available: boolean
 }
