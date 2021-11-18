@@ -6,19 +6,17 @@ import {
   Param,
   Put,
   Post,
+  Query,
   Req,
-  ParseIntPipe,
 } from '@nestjs/common'
 import { Request } from 'express'
 import { createBookDto } from './dto/book.dto'
 import { BookService } from './book.service'
-import { Book } from './entity/book.entity'
-import { DeleteResult } from 'typeorm'
+import { Book } from './entities/book.entity'
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
-  
-  // TODO : get with queries
+
   // @Get()
   // findAll(@Query('order') order:string, @Query('limit') limit: string) {
   //   const params = [];
@@ -34,23 +32,23 @@ export class BookController {
     return this.bookService.findAll(request.query)
   }
 
-  @Get(':bookId')
-  findBook(@Param('bookId') bookId: number): Promise<Book> {
-    return this.bookService.findOne(bookId)
-  }
-
-  @Post()
-  createBook(@Body() newBook: createBookDto): Promise<Book> {
-    return this.bookService.createBook(newBook)
-  }
-
-  // @Delete(':bookId') 
-  // deleteBook(@Param('bookId') bookId: number): Promise<DeleteResult> {
-  //   return this.bookService.deleteBook(bookId)
+  // @Get(':bookId')
+  // findBook(@Param('bookId') bookId: string): Book {
+  //   return this.bookService.findBook(bookId)
   // }
 
-  // @Put(':bookId')
-  // updateBook(@Param('bookId') bookId: number, @Body() newBook: BookDto): Promise<Book> {
+  @Post()
+  async createBook(@Body() newBook: createBookDto): Promise<Book> {
+    // const newBook: any = body;
+    return this.bookService.createBook(newBook)
+  }
+  // @Delete(':bookId')
+  // deleteBook(@Param('bookId') bookId: string): Book {
+  //   return this.bookService.deleteBook(bookId)
+  // }
+  // @Put(':bookdId')
+  // updateBook(@Param('bookId') bookId: string, @Body() newBook: BookDto): Book {
+  //   // const newBook:any = body;
   //   return this.bookService.updateBook(bookId, newBook)
   // }
 }

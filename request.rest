@@ -27,3 +27,21 @@ Content-Type: application/json
     "pages": 624,
     "image_url": "https://images-na.ssl-images-amazon.com/images/I/41KiZbwOhhL._SX315_BO1,204,203,200_.jpg"
 }
+
+##########
+POST http://localhost:3000/api/v1/loan
+Content-Type: application/json
+
+{
+    "bookId":1,
+    "userId":1
+}
+
+##########
+PATCH http://localhost:3000/api/v1/loan/1
+Content-Type: application/json
+
+{
+    "bookId":1,
+    "userId":1
+}

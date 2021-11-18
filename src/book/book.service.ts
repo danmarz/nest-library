@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 // import { Book } from './interface/book.class'
-import { Book } from './entity/book.entity'
+import { Book } from './entities/book.entity'
 import { createBookDto } from './dto/book.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -8,22 +8,19 @@ import { Repository } from 'typeorm'
 @Injectable()
 export class BookService {
   constructor(
-    @InjectRepository(Book) private bookRepository: Repository<Book>,
-  ) {}
+    @InjectRepository(Book) private bookRepository: Repository<Book>
+  ){}
 
-  async findAll({ order = 1, limit = 0 } = {}): Promise<Book[]> {
-    const sort = order ? 'ASC' : 'DESC'
-
-    return await this.bookRepository.find({
-      order: { title: sort },
-      take: limit,
-    })
+  async findAll({order=1,limit=0}={}): Promise<Book[]> {
+    const sort = order?'ASC':'DESC'
+    
+    return await this.bookRepository.find({order:{title:sort},take:limit})
   }
 
-  async createBook(newBook: createBookDto): Promise<Book> {
+  async createBook(newBook: createBookDto): Promise<Book>{
     const book: Book = new Book()
     // Object.assign(book,newBook)
-
+   
     book.title = newBook.title
     book.author = newBook.author
     book.pages = +newBook.pages
@@ -35,7 +32,7 @@ export class BookService {
     return await this.bookRepository.save(book)
   }
 
-  async findOne(bookId): Promise<Book> {
+  async findBook(bookId): Promise<Book>{
     //  return `findBook funciona con bookId:${bookId}`;
     return await this.bookRepository.findOne(bookId)
   }
@@ -57,7 +54,7 @@ export class BookService {
   //   const index = books.findIndex(element => element.id === +bookId)
   //   // return `deleteBook funciona con bookId:${bookId}`;
   //   return  books.splice(index,1)[0]
-
+    
   // }
   // updateBook(bookId:string, newBook:BookDto){
   //   const index = books.findIndex(element => element.id === +bookId)

@@ -1,44 +1,22 @@
-import { Controller, Get, Post, Body, HttpException } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpCode, HttpStatus, Put, UseFilters } from '@nestjs/common'
 import { LoanService } from './loan.service'
-import { CreateLoanDto } from './dto/create-loan.dto'
+import { LoanDto } from './dto/loan.dto'
+import { HttpExceptionFilter } from '../helper/http-exception.filter'
 
+// import { UpdateLoanDto } from './dto/update-loan.dto'
+@UseFilters(new HttpExceptionFilter())
 @Controller('loan')
 export class LoanController {
   constructor(private readonly loanService: LoanService) {}
 
   @Post()
-  async create(@Body() createLoanDto: CreateLoanDto) {
-    try {
-      return this.loanService.create(createLoanDto) 
-    } catch (error) {
-      throw new HttpException({
-        error: error.message
-      }, 403)
-    }
+  async create(@Body() loanDto: LoanDto) {
+      return await this.loanService.create(LoanDto)
   }
 
-  @Get()
-  findAll() {
-    return this.loanService.findAll()
+  @Patch(':loanId')
+  async update(@Param('loanId') loanId: number, @Body() loanDto: LoanDto){
+    return await this.loanService.update(loanId,loanDto)
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.loanService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.loanService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
-  //   return this.loanService.update(+id, updateLoanDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.loanService.remove(+id);
-  // }
 }
