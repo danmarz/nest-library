@@ -1,31 +1,68 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
+import { LoginUserDto } from './dto/login-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
+import { Encryption } from 'src/helper/utils/encyption.helper'
+import { IsString } from 'class-validator'
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userRepository: Repository <User>){ }
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user'
+  async create(createUserDto: CreateUserDto) {
+    const user = new User()
+    Object.assign(user, createUserDto)
+
+    return await this.userRepository.save(user)
   }
 
-  findAll() {
-    return `This action returns all user`
+  async loginUser(incomingLogin: LoginUserDto) {
+    const dbUser = await this.userRepository.findOne({
+      email: incomingLogin.email,
+    })
+
+    if (
+      await Encryption.comparePassword(incomingLogin.password, dbUser.password)
+    ) {
+      return `${dbUser.email} logged in succesfully`
+    } else throw new BadRequestException('Invalid email or password.')
   }
 
-  async findOne(id: number) {
-    return await this.userRepository.findOne(id)
+  async findAll() {
+    return await this.userRepository.find()
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`
+  async findOne(id: number | string) {
+    if (typeof id === "string") {
+      return await this.userRepository.findOne(id)
+    } else if (typeof id === "number") {
+      const email = id + ''
+      return await this.userRepository.findOne({ email: email} )
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const dbUser = await this.userRepository.findOne(id)
+    const newPassword = await Encryption.encryptPassword(updateUserDto.password)
+
+    Object.assign(dbUser, updateUserDto)
+    dbUser.password = newPassword
+    return await this.userRepository.save(dbUser)
+  }
+
+  async remove(id: number) {
+    const dbUser = await this.userRepository.findOne(id)
+
+    if (dbUser) {
+      return this.userRepository.delete(dbUser)
+    } else
+      throw new BadRequestException(
+        'User does not exist.',
+      )
   }
 }

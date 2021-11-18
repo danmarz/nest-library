@@ -2,14 +2,20 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { LoginUserDto } from './dto/login-user.dto'
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('register')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto)
+  }
+  
+  @Post('login')
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.userService.loginUser(loginUserDto);
   }
 
   @Get()
@@ -19,6 +25,9 @@ export class UserController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    
+    console.log('findOne(9)', this.userService.findOne(9));
+    console.log('findOne(email)', this.userService.findOne('mickey@mouse.com'));
     return this.userService.findOne(+id)
   }
 
