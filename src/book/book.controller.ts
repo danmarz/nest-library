@@ -13,6 +13,7 @@ import { Request } from 'express'
 import { createBookDto } from './dto/book.dto'
 import { BookService } from './book.service'
 import { Book } from './entities/book.entity'
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
@@ -28,6 +29,8 @@ export class BookController {
   // }
 
   @Get()
+  @ApiOperation({ summary: 'Obtener lista de todos los libros' })
+  @ApiResponse({ status: 201, description: 'lista de libros', type: Book })
   findAll(@Req() request: Request): Promise<Book[]> {
     return this.bookService.findAll(request.query)
   }
