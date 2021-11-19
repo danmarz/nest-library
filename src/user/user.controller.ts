@@ -24,10 +24,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    
-    console.log('findOne(9)', this.userService.findOne(9));
-    console.log('findOne(email)', this.userService.findOne('mickey@mouse.com'));
+  async findOne(@Param('id') id: string) {
     return this.userService.findOne(+id)
   }
 

@@ -6,7 +6,6 @@ import { LoginUserDto } from './dto/login-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 import { Encryption } from 'src/helper/utils/encyption.helper'
-import { IsString } from 'class-validator'
 
 @Injectable()
 export class UserService {
@@ -37,13 +36,12 @@ export class UserService {
     return await this.userRepository.find()
   }
 
-  async findOne(id: number | string) {
-    if (typeof id === "string") {
-      return await this.userRepository.findOne(id)
-    } else if (typeof id === "number") {
-      const email = id + ''
-      return await this.userRepository.findOne({ email: email} )
-    }
+  async findOne(id: number) {
+    return await this.userRepository.findOne(id)
+  }
+
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOne({ email: email })
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
@@ -60,9 +58,6 @@ export class UserService {
 
     if (dbUser) {
       return this.userRepository.delete(dbUser)
-    } else
-      throw new BadRequestException(
-        'User does not exist.',
-      )
+    } else throw new BadRequestException('User does not exist.')
   }
 }
