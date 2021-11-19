@@ -16,7 +16,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException()
     const isValidPassword = await Encryption.comparePassword(
       password,
-      user.password
+      user.password,
     )
 
     if (user && isValidPassword) {
