@@ -20,18 +20,6 @@ export class UserService {
     return await this.userRepository.save(user)
   }
 
-  async loginUser(incomingLogin: LoginUserDto) {
-    const dbUser = await this.userRepository.findOne({
-      email: incomingLogin.email,
-    })
-
-    if (
-      await Encryption.comparePassword(incomingLogin.password, dbUser.password)
-    ) {
-      return `${dbUser.email} logged in succesfully`
-    } else throw new BadRequestException('Invalid email or password.')
-  }
-
   async findAll() {
     return await this.userRepository.find()
   }
